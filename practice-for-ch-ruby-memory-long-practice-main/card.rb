@@ -5,11 +5,15 @@ class Card
     @face_up = false
   end
 
+  def face_up
+    @face_up
+  end 
+
   def hide
     @face_up = false
   end
 
-  def reveal?
+  def reveal
     @face_up = true
   end
 
