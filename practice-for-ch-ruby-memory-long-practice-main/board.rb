@@ -4,20 +4,25 @@ class Board
   def initialize(n)
     @grid = Array.new(n) {Array.new(n)}
     @length = n
+    self.populate
   end
 
-  # def [](pos)
-  #   row, col = pos
-  #   @grid[row][col]
-  # end
+  def [](pos)
+    row, col = pos
+    @grid[row][col]
+  end
+
+   def []=(pos, value)
+    row, col = pos
+    @grid[row][col] = value
+  end
 
   def populate
     cards = [:A, :B, :C, :D, :E, :F, :G, :H]
-    cards.each do |card| 
-      2.times do  
+    cards.each do |card|
+      2.times do
         pos = self.get_random_position
-        row, col = pos
-        @grid[row][col] = Card.new(card)
+        self[pos] = Card.new(card)
       end
     end
   end
@@ -26,7 +31,7 @@ class Board
     row_idx = rand(0...@length)
     col_idx = rand(0...@length)
     pos = [row_idx, col_idx]
-    if @grid[row_idx][col_idx].nil?
+    if self[pos].nil?
       return pos
     else
       self.get_random_position
@@ -43,9 +48,9 @@ class Board
         else
           display_row << " "          #otherwise, dont add anything
         end
-      end 
+      end
       display << display_row          #after iterating through 4x, shovel all rows to new grid
-    end 
+    end
     display.each { |row| p row }
   end
 
@@ -54,8 +59,7 @@ class Board
   end
 
   def reveal(guessed_pos) #[row][col]
-    row, col = guessed_pos 
-    card = @grid[row][col] #card obj
+    card = self[guessed_pos] #card obj
     if !card.face_up
       card.reveal
       return card.value
