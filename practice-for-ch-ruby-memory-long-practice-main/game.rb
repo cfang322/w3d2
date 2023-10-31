@@ -1,17 +1,19 @@
 require_relative 'board.rb'
 require_relative 'card.rb'
+require_relative 'human.rb'
 
 class Game
   def initialize(n)
     @board = Board.new(n)
     @prev_guess = nil
+    @human_player = Human_player.new("Christina")
   end
 
   def play
     while @board.won? == false
       system("clear")
       @board.render
-      pos = gets.chomp.split(" ").map(&:to_i)
+      pos = @human_player.get_input
       self.make_guess(pos)
     end
     puts "you win!!!!!!!!!! :)"
